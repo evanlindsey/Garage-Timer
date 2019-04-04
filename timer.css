@@ -1,0 +1,61 @@
+#stopwatch {
+  display: none;
+}
+
+#countdown {
+  display: none;
+}
+
+.timer {
+  width: 250px;
+  white-space: nowrap;
+}
+
+.digits {
+  font-size: 5em;
+}
+
+.digits-small {
+  font-size: 3em;
+}
+
+.btn {
+  width: 200px;
+  margin-top: 10px;
+}
+
+.input {
+  width: 150px;
+  display: inline-block;
+}
+
+.controls {
+  width: 450px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .timer {
+    width: 200px;
+  }
+
+  .digits {
+    font-size: 3.7em;
+  }
+
+  .digits-small {
+    font-size: 2.2em;
+  }
+
+  .btn {
+    width: 150px;
+  }
+
+  .input {
+    width: 100px;
+  }
+
+  .controls {
+    width: 340px;
+  }
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>TIMER</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./timer.css">
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-dark bg-primary justify-content-center">
+			<a class="navbar-brand" href="#/stopwatch">STOPWATCH</a>
+			<a class="navbar-brand">|</a>
+			<a class="navbar-brand" href="#/countdown">COUNTDOWN</a>
+		</nav>
+	</header>
+	<main role="main">
+		<div class="container">
+			<br />
+			<div class="row justify-content-center">
+				<div class="timer">
+					<span class="h1 digits" id="minutes">00</span>
+					<span class="h1 digits">&nbsp;:&nbsp;</span>
+					<span class="h1 digits" id="seconds">00</span>
+					<span class="h1 digits">&nbsp;</span>
+					<span class="h1 digits-small" id="milliseconds">00</span>
+				</div>
+			</div>
+			<br />
+			<div class="row justify-content-center">
+				<div id="stopwatch">
+					<div class="row justify-content-center">
+						<h1>STOPWATCH</h1>
+					</div>
+				</div>
+				<div id="countdown">
+					<div class="row justify-content-center">
+						<h1>COUNTDOWN</h1>
+					</div>
+					<div class="controls">
+						<input type="text" class="input form-control" placeholder="Minutes" id="countdown-min">
+						<input type="text" class="input form-control" placeholder="Seconds" id="countdown-sec">
+					</div>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="controls">
+					<button type="button" class="btn btn-success btn-lg" id="state">START</button>
+					<button type="button" class="btn btn-danger btn-lg" id="reset">RESET</button>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/director@1.2.8/build/director.min.js"></script>
+	<script src="./timer.js"></script>
+</body>
+
+</html>
