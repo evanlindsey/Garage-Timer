@@ -2,29 +2,37 @@ var startTime, pauseTime, endTime,
     isStarted, isPaused, interval;
 
 function setDigits(minutes, seconds, milliseconds) {
-    $('#minutes').html(minutes);
-    $('#seconds').html(seconds);
-    $('#milliseconds').html(milliseconds);
+    document.querySelector('#minutes').innerHTML = minutes;
+    document.querySelector('#seconds').innerHTML = seconds;
+    document.querySelector('#milliseconds').innerHTML = milliseconds;
 }
 
 function setStateBtn(classRemove, classAdd, btnText) {
-    var state = $('#state');
-    state.removeClass('btn-' + classRemove);
-    state.addClass('btn-' + classAdd);
-    state.html(btnText);
+    var state = document.querySelector('#state');
+    state.classList.remove(`btn-${classRemove}`);
+    state.classList.add(`btn-${classAdd}`);
+    state.innerHTML = btnText;
 }
 
 function setDefaults(mode) {
-    clearInterval(interval);
-    $('body').find('*').each((index, element) => $(element).off('click'));
-    $('#reset').click(() => onReset(mode));
-    $('#countdown-min').val('');
-    $('#countdown-sec').val('');
     startTime = 0;
     pauseTime = 0;
     endTime = null;
     isStarted = false;
     isPaused = false;
+
+    clearInterval(interval);
+
+    var state = document.querySelector('#state');
+    var reset = document.querySelector('#reset');
+    state.removeEventListener('click', onStateChange);
+    reset.removeEventListener('click', onReset);
+    reset.addEventListener('click', onReset);
+    reset.mode = mode;
+
+    document.querySelector('#countdown-min').value = '10';
+    document.querySelector('#countdown-sec').value = '00';
+
     setDigits('00', '00', '00');
     setStateBtn('warning', 'success', 'START');
 }
@@ -33,8 +41,8 @@ function formatTime(time) {
     var totalMinutes = Math.floor(time / 60000);
     var totalSeconds = Math.floor((time % 60000) / 1000);
     var totalMilliseconds = (time / 1000).toFixed(2);
-    var minuteString = (totalMinutes < 10) ? ('0' + totalMinutes) : totalMinutes;
-    var secondString = (totalSeconds < 10) ? ('0' + totalSeconds) : totalSeconds;
+    var minuteString = (totalMinutes < 10) ? (`0${totalMinutes}`) : totalMinutes;
+    var secondString = (totalSeconds < 10) ? (`0${totalSeconds}`) : totalSeconds;
     var millisecondString = totalMilliseconds.toString().slice(-2);
     setDigits(minuteString, secondString, millisecondString);
 }
@@ -56,21 +64,23 @@ function updateCountdown() {
     }
 }
 
-function onReset(mode) {
-    var result = confirm('RESET TIMER?');
+function onReset(event) {
+    var mode = event.target.mode;
+    var result = confirm(`RESET ${mode.toUpperCase()}?`);
     if (result) {
         loadTimer(mode);
     }
 }
 
-function onStateChange(mode) {
+function onStateChange(event) {
+    var mode = event.target.mode;
     if (!isStarted) {
         if (mode === 'stopwatch') {
             startTime = Date.now();
             interval = setInterval(() => isPaused ? null : updateStopwatch(), 1);
         } else if (mode === 'countdown') {
-            var minutes = $('#countdown-min').val();
-            var seconds = $('#countdown-sec').val();
+            var minutes = document.querySelector('#countdown-min').value;
+            var seconds = document.querySelector('#countdown-sec').value;
             if (!minutes || !seconds || (parseInt(minutes) === 0 && parseInt(seconds) === 0)) {
                 return;
             }
@@ -100,34 +110,30 @@ function onStateChange(mode) {
 
 function loadTimer(mode) {
     setDefaults(mode);
-    $('#' + mode).show();
+    document.querySelector(`#${mode}`).style.display = 'block';
     if (mode === 'stopwatch') {
-        $('#countdown').hide();
+        document.querySelector('#countdown').style.display = 'none';
     } else if (mode === 'countdown') {
-        $('#stopwatch').hide();
+        document.querySelector('#stopwatch').style.display = 'none';
     }
-    $('#state').click(() => onStateChange(mode));
+    var state = document.querySelector('#state');
+    state.addEventListener('click', onStateChange);
+    state.mode = mode;
 }
 
 function filterInput(event, maxNum) {
-    var value = event.target.value;
-    if (event.keyCode === 8 || event.keyCode === 9 ||
-        event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46) {
+    var keyCode = event.which || event.keyCode || 0;
+    if (keyCode === 8 || keyCode === 9 || keyCode === 37 || keyCode === 39 || keyCode === 46) {
         return;
     }
-    var char = String.fromCharCode(event.keyCode);
-    if (!char.match(/^\d*$/)) {
-        event.preventDefault();
-    }
-    if (parseInt(value + char) > maxNum) {
-        event.preventDefault();
-    }
-    if (value.length >= maxNum.toString().length) {
+    var value = event.target.value;
+    var char = String.fromCharCode(keyCode);
+    if (!char.match(/^\d*$/) || parseInt(value + char) > maxNum) {
         event.preventDefault();
     }
 }
 
-$(document).ready(() => {
+document.addEventListener('DOMContentLoaded', () => {
     const pages = {
         stopwatch: () => loadTimer('stopwatch'),
         countdown: () => loadTimer('countdown'),
