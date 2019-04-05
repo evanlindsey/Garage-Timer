@@ -18,8 +18,8 @@ function setDefaults(mode) {
     clearInterval(interval);
     $('body').find('*').each((index, element) => $(element).off('click'));
     $('#reset').click(() => onReset(mode));
-    $('#countdown-min').val('00');
-    $('#countdown-sec').val('00');
+    $('#countdown-min').val('');
+    $('#countdown-sec').val('');
     startTime = 0;
     pauseTime = 0;
     endTime = null;
@@ -98,23 +98,6 @@ function onStateChange(mode) {
     }
 }
 
-function filterInput(element, regex, maxNum) {
-    var input = $('#' + element);
-    input.keypress((e) => {
-        var char = String.fromCharCode(e.which);
-        if (!char.match(regex)) {
-            return false;
-        }
-        var value = input.val();
-        if (parseInt(value + char) > maxNum) {
-            return false;
-        }
-        if (value.length >= maxNum.toString().length) {
-            return false;
-        }
-    });
-}
-
 function loadTimer(mode) {
     setDefaults(mode);
     $('#' + mode).show();
@@ -122,10 +105,26 @@ function loadTimer(mode) {
         $('#countdown').hide();
     } else if (mode === 'countdown') {
         $('#stopwatch').hide();
-        filterInput('countdown-min', /^\d*$/, 99);
-        filterInput('countdown-sec', /^\d*$/, 59);
     }
     $('#state').click(() => onStateChange(mode));
+}
+
+function filterInput(event, maxNum) {
+    var value = event.target.value;
+    if (event.keyCode === 8 || event.keyCode === 9 ||
+        event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 46) {
+        return;
+    }
+    var char = String.fromCharCode(event.keyCode);
+    if (!char.match(/^\d*$/)) {
+        event.preventDefault();
+    }
+    if (parseInt(value + char) > maxNum) {
+        event.preventDefault();
+    }
+    if (value.length >= maxNum.toString().length) {
+        event.preventDefault();
+    }
 }
 
 $(document).ready(() => {

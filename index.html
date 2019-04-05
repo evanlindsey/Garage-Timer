@@ -42,8 +42,10 @@
 						<h1>COUNTDOWN</h1>
 					</div>
 					<div class="controls">
-						<input type="text" class="input form-control" placeholder="Minutes" id="countdown-min">
-						<input type="text" class="input form-control" placeholder="Seconds" id="countdown-sec">
+						<input type="text" class="input form-control" placeholder="Minutes" id="countdown-min"
+							onkeydown="filterInput(event, 99)">
+						<input type="text" class="input form-control" placeholder="Seconds" id="countdown-sec"
+							onkeydown="filterInput(event, 59)">
 					</div>
 				</div>
 			</div>
