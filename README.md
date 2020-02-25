@@ -1,3 +1,3 @@
-# Garage-Timer
+# Garage Timer
 
 ![Stopwatch](./stopwatch.gif)
